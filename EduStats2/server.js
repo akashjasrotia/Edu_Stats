@@ -24,8 +24,8 @@ connectDB();
 const app = express();
 
 const frontendUrls = [
-  "http://localhost:5173",
-  process.env.FRONTEND_URL || "http://localhost:5173"
+  process.env.FRONTEND_URL,
+  process.env.FRONTEND_URL_LOCAL
 ];
 
 app.use(cors({
