@@ -1,4 +1,4 @@
-import { BarChart3, UploadCloud, Eye, Loader2, Sparkles } from "lucide-react";
+import { BarChart3, UploadCloud, Eye, Loader2, Sparkles, Loader2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useIsLoggedIn } from "../stores/IsLoggedInStore";
 import { useThemeStore } from "../stores/ThemeStore";
@@ -18,26 +18,13 @@ export default function Home() {
     const timer = setTimeout(() => setLoading(false), 1200);
     return () => clearTimeout(timer);
   }, []);
+    const bgMain = darkMode ? "bg-zinc-950" : "bg-gray-50";
 
-  if (loading) {
+
+  if(loading) {
     return (
-      <div
-        className={`flex flex-col items-center justify-center min-h-screen ${
-          darkMode ? "bg-zinc-950" : "bg-white"
-        }`}
-      >
-        <div className="relative">
-          <Loader2
-            className={`w-10 h-10 animate-spin ${
-              darkMode ? "text-white" : "text-black"
-            }`}
-          />
-          <div
-            className={`absolute inset-0 w-10 h-10 rounded-full blur-xl ${
-              darkMode ? "bg-white/20" : "bg-black/10"
-            }`}
-          ></div>
-        </div>
+      <div className={`min-h-screen flex items-center justify-center ${bgMain}`}>
+        <Loader2Icon className="animate-spin w-8 h-8 text-zinc-500" />
       </div>
     );
   }
@@ -48,9 +35,7 @@ export default function Home() {
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-500 ${
-        darkMode ? "bg-zinc-950" : "bg-gray-50"
-      }`}
+      className={`min-h-screen transition-colors duration-500 bg-transparent`}
     >
       <div className="max-w-7xl mx-auto px-6 py-16">
         
@@ -63,10 +48,10 @@ export default function Home() {
             
             <button
               onClick={() => navigate("/home/manual")}
-              className={`group relative overflow-hidden rounded-2xl p-8 text-left transition-all duration-300 hover:-translate-y-1 ${
+              className={`group relative overflow-hidden rounded-3xl p-8 text-left transition-all duration-300 ${
                 darkMode
-                  ? "bg-zinc-900 hover:bg-zinc-900/80"
-                  : "bg-white border-1 border-gray-300 hover:bg-gray-50 shadow-sm hover:shadow-md"
+                  ? "glass-card-dark"
+                  : "glass-card"
               }`}
             >
               <div
@@ -110,10 +95,10 @@ export default function Home() {
             
             <button
               onClick={() => navigate("/dashboard")}
-              className={`group relative overflow-hidden rounded-2xl p-8 text-left sm:col-span-2 transition-all duration-300 hover:-translate-y-1 ${
+              className={`group relative overflow-hidden rounded-3xl p-8 text-left sm:col-span-2 transition-all duration-300 ${
                 darkMode
-                  ? "bg-zinc-900 hover:bg-zinc-900/80"
-                  : "bg-white border-1 border-gray-400  hover:bg-gray-50 shadow-sm hover:shadow-md"
+                  ? "glass-card-dark"
+                  : "glass-card"
               }`}
             >
               <div
@@ -167,8 +152,8 @@ export default function Home() {
           ].map((stat, i) => (
             <div
               key={i}
-              className={`rounded-xl p-6 ${
-                darkMode ? "bg-zinc-900/50" : "bg-white/50 shadow-sm"
+              className={`rounded-3xl p-6 ${
+                darkMode ? "glass-panel-dark" : "glass-panel"
               }`}
             >
               <p

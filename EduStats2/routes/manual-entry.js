@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Visualization = require("../models/vizModel.js");
+const { validateData } = require("../utils/dataValidator");
 
 router.post("/", async (req, res) => {
   try {
@@ -15,6 +16,10 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ message: "User info missing!" });
     }
 
+    const { errors, warnings } = validateData(students);
+    if (errors.length > 0) {
+      return res.status(400).json({ success: false, errors, warnings });
+    }
     
     const normalized = students.map((s) => ({
       name: s.name || "Unknown",
@@ -92,6 +97,7 @@ router.post("/", async (req, res) => {
       totalStudents: savedVisualization.totalStudents,
       stats: savedVisualization.stats,
       studentResults: savedVisualization.studentResults,
+      warnings,
     });
   } catch (err) {
     console.error("Error in /manual-entry:", err);

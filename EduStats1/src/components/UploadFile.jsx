@@ -31,10 +31,10 @@ function ExcelUpload() {
       const raw = XLSX.utils.sheet_to_json(worksheet);
       
       const formatted = raw.map((s) => ({
-        name: s.Name || s.name || "Unknown",
-        marks: Number(s.Marks || s.marks || 0),
+        name: s.Name || s.name,
+        marks: s.Marks !== undefined ? s.Marks : s.marks,
         subject: s.Subject || s.subject || "N/A",
-        totalMarks: Number(s.TotalMarks || s.totalMarks || s.total_marks || s.Total || 100),
+        totalMarks: s.TotalMarks !== undefined ? s.TotalMarks : (s.totalMarks !== undefined ? s.totalMarks : (s.total_marks !== undefined ? s.total_marks : (s.Total !== undefined ? s.Total : 100))),
         remarks: s.Remarks || s.remarks || "N/A",
       }));
 
@@ -70,7 +70,13 @@ function ExcelUpload() {
       toast.success("Data processed successfully");
       setTimeout(() => navigate("/results"), 800);
     } else {
-      toast.error(result.message || "Something went wrong");
+      if (result.errors) {
+        setResults({ errors: result.errors, warnings: result.warnings });
+        toast.error("Data quality issues detected");
+        setTimeout(() => navigate("/results"), 800);
+      } else {
+        toast.error(result.message || "Something went wrong");
+      }
     }
   };
 

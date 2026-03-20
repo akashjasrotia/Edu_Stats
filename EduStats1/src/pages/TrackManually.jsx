@@ -82,7 +82,13 @@ export default function ManualEntry() {
         toast.success("Saved successfully");
         navigate("/results");
       } else {
-        toast.error(data.message || "Something went wrong");
+        if (data.errors) {
+          setResults({ errors: data.errors, warnings: data.warnings });
+          toast.error("Data quality issues detected");
+          navigate("/results");
+        } else {
+          toast.error(data.message || "Something went wrong");
+        }
       }
     } catch {
       toast.error("Server error");

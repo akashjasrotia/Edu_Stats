@@ -1,7 +1,9 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useThemeStore } from "../stores/ThemeStore";
 import { useIsLoggedIn } from "../stores/IsLoggedInStore";
+import { useResultStore } from "../stores/ResultStore";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import {
   Menu,
@@ -15,8 +17,9 @@ import {
   Moon,
   Sun,
   Award,
+  User,
+  AlertTriangle,
 } from "lucide-react";
-import { useResultStore } from "../stores/ResultStore";
 
 export default function Sidebar() {
   const clearResults = useResultStore((s) => s.clearResults);
@@ -41,9 +44,7 @@ export default function Sidebar() {
         clearResults();
         toast.success("Logged out successfully");
         setTimeout(() => navigate("/login"), 800);
-      } else {
-        toast.error("Logout failed");
-      }
+      } else toast.error("Logout failed");
     } catch {
       toast.error("Something went wrong");
     }
@@ -69,32 +70,49 @@ export default function Sidebar() {
     }`;
 
   const navItems = [
-    { to: "/home", label: "Home", icon: <Home size={20} /> },
-    { to: "/results", label: "Saved Results", icon: <Award size={20} /> },
+  { to: "/home", label: "Home", icon: <Home size={20} /> },
+  { to: "/results", label: "Results", icon: <Award size={20} /> },
+
+  ...(isLoggedIn
+    ? [
+        { to: "/dashboard", label: "Dashboard", icon: <BarChart3 size={20} /> },
+      ]
+    : []),
+
+  
     ...(isLoggedIn
-      ? [{ to: "/dashboard", label: "Dashboard", icon: <BarChart3 size={20} /> }]
-      : []),
-    { to: "/about", label: "About", icon: <Info size={20} /> },
-    { to: "/contact", label: "Contact", icon: <Phone size={20} /> },
-  ];
+    ? [
+      {to:'/anomaly',label:'Anomalies',icon:<AlertTriangle size={20}/>},
+        {to:'/compare-visualizations',label:'Compare',icon:<BarChart3 size={20}/>},
+        
+      ]
+    : []
+  ),
+  { to: "/about", label: "About", icon: <Info size={20} /> },
+  { to: "/contact", label: "Contact", icon: <Phone size={20} /> },
+  ...isLoggedIn ? [
+    {to:'/profile',label:'Profile',icon:<User size={20}/>},
+  ] :[],
+
+];
+
 
   return (
     <div
       onMouseEnter={() => setExpanded(true)}
-      onMouseLeave={() => setExpanded(false)}
+      onMouseLeave={() => {
+        setExpanded(false);
+        setAnalyticsOpen(false);
+      }}
       className={`
-        fixed left-0 top-0 z-50 h-screen flex flex-col select-none
-        transition-all duration-300 overflow-hidden
-        ${expanded ? "w-64" : "w-16"}
-        ${darkMode ? "bg-zinc-900" : "bg-white"}
+        fixed left-0 top-0 z-50 h-[calc(100vh-2rem)] m-4 rounded-3xl flex flex-col select-none
+        transition-all duration-300 overflow-hidden shadow-2xl backdrop-blur-xl border
+        ${expanded ? "w-64" : "w-[4.5rem]"}
+        ${darkMode ? "bg-zinc-900/40 border-white/10" : "bg-white/40 border-white/40"}
       `}
     >
-      
       <div className="flex items-center gap-3 px-4 py-4">
-        <Menu
-          size={26}
-          className={darkMode ? "text-white" : "text-black"}
-        />
+        <Menu size={26} className={darkMode ? "text-white" : "text-black"} />
         <span
           className={`
             text-xl tracking-widest font-medium
@@ -107,7 +125,6 @@ export default function Sidebar() {
         </span>
       </div>
 
-      
       <nav className="flex flex-col gap-1 px-2 mt-2">
         {navItems.map((item, i) => (
           <NavLink key={i} to={item.to} className={getNavLinkClass}>
@@ -117,7 +134,6 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      
       <div className="mt-auto flex flex-col gap-2 px-2 pb-6">
         {!isLoggedIn ? (
           <>
@@ -148,7 +164,6 @@ export default function Sidebar() {
           </button>
         )}
 
-        
         <button
           onClick={toggleDarkMode}
           className={`${navBase} ${
@@ -172,7 +187,7 @@ export default function Sidebar() {
                 className={`w-4 h-4 bg-white rounded-full shadow transition-transform ${
                   darkMode ? "translate-x-5" : "translate-x-0"
                 }`}
-              ></div>
+              />
             </div>
           )}
         </button>

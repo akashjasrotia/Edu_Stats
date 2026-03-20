@@ -10,8 +10,11 @@ import { useIsLoggedIn } from "../stores/IsLoggedInStore";
 import { motion } from "framer-motion";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import TeacherInsights from "../components/TeacherInsights";
 
 export default function SavedResultsPage() {
+  const [showTeacherInsights, setShowTeacherInsights] = useState(false);
+
   const isLoggedIn = useIsLoggedIn((s) => s.isLoggedIn);
   const darkMode = useThemeStore((s) => s.darkMode);
   const navigate = useNavigate();
@@ -132,26 +135,51 @@ export default function SavedResultsPage() {
       {/* NAV */}
       <nav
         className={`fixed top-4 left-1/2 -translate-x-1/2 z-40
-        w-[92%] max-w-4xl rounded-2xl px-6 py-4 backdrop-blur-md ${
+        w-[92%] max-w-4xl rounded-2xl px-6 py-4
+        backdrop-blur-md transition ${
           darkMode
             ? "bg-zinc-900/70 border border-zinc-800"
-            : "bg-white/70 border border-gray-200"
+            : "bg-white/70 border border-gray-200 shadow-sm"
         }`}
       >
-        
-        <div className="flex justify-center gap-6 items-center text-sm">
-          <a href="#charts-section" className="hover:text-indigo-400">Charts</a>
-          <a href="#stats-summary" className="hover:text-indigo-400">Stats</a>
-          <a href="#ai-overview" className="hover:text-indigo-400">AI Insights</a>
+        <div
+          className={`flex justify-center gap-6 text-sm font-medium items-center ${
+            darkMode ? "text-zinc-300" : "text-gray-600"
+          }`}
+        >
+          <button
+            onClick={() => setShowTeacherInsights(true)}
+            className={`absolute left-4 top-2.5 px-4 py-1.5 rounded-lg transition ${
+              darkMode
+                ? "bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20"
+                : "bg-indigo-50 text-indigo-700 hover:bg-indigo-100"
+            }`}
+          >
+            TEACHER INSIGHTS
+          </button>
+          <a
+            href="#charts-section"
+            className="hover:text-indigo-400 transition"
+          >
+            Charts
+          </a>
+          <a href="#stats-summary" className="hover:text-indigo-400 transition">
+            Stats
+          </a>
+          <a href="#ai-overview" className="hover:text-indigo-400 transition">
+            AI Insights
+          </a>
 
           <button
             onClick={() => setShowLeaderboard(true)}
-            className="px-4 py-1.5 rounded-lg bg-indigo-500/10 text-indigo-400"
+            className={`absolute right-4 top-2.5 px-4 py-1.5 rounded-lg transition ${
+              darkMode
+                ? "bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20"
+                : "bg-indigo-50 text-indigo-700 hover:bg-indigo-100"
+            }`}
           >
             Leaderboard
           </button>
-
-          
         </div>
       </nav>
 
@@ -227,6 +255,41 @@ export default function SavedResultsPage() {
           </div>
         </motion.div>
       )}
+      {showTeacherInsights && (
+  <motion.div
+    initial={{ opacity: 0, y: 80 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -80 }}
+    className="fixed inset-0 z-50 flex items-center justify-center"
+  >
+    <div
+      className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+      onClick={() => setShowTeacherInsights(false)}
+    />
+
+    <div
+      className={`relative w-[92%] max-w-4xl rounded-3xl p-6 ${
+        darkMode
+          ? "bg-zinc-900 border border-zinc-800"
+          : "bg-white border border-gray-200 shadow-xl"
+      }`}
+    >
+      <button
+        onClick={() => setShowTeacherInsights(false)}
+        className="absolute top-4 right-4 p-2 rounded-full hover:bg-zinc-800 transition"
+      >
+        <X />
+      </button>
+
+      <TeacherInsights
+        stats={stats}
+        studentResults={studentResults}
+        darkMode={darkMode}
+      />
+    </div>
+  </motion.div>
+)}
+
     </div>
   );
 }

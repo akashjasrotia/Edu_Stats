@@ -2,7 +2,7 @@ import { useResultStore } from "../stores/ResultStore";
 import { useThemeStore } from "../stores/ThemeStore";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Loader2, X, ArrowBigDown } from "lucide-react";
+import { Loader2, X, ArrowBigDown, AlertTriangle } from "lucide-react";
 import { motion } from "framer-motion";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -64,7 +64,7 @@ export default function ResultsPage() {
     );
   }
 
-  const { vizName, studentResults, stats } = results;
+  const { vizName, studentResults, stats, errors, warnings } = results;
 
   const handleDownload = async () => {
     const element = document.getElementById("results-export");
@@ -173,36 +173,87 @@ export default function ResultsPage() {
       </nav>
 
       <div className="max-w-5xl mx-auto text-center mb-14">
-        <p className="text-3xl font-light mb-1">{vizName}</p>
-        <p className="text-lg text-zinc-500">
-          Total Students · {studentResults.length}
-        </p>
+        {vizName ? (
+          <>
+            <p className="text-3xl font-light mb-1">{vizName}</p>
+            <p className="text-lg text-zinc-500">
+              Total Students · {studentResults?.length || 0}
+            </p>
+          </>
+        ) : (
+          <p className="text-3xl font-light mb-1">Data Quality Check</p>
+        )}
       </div>
 
-      <div
-        id="results-export"
-        className="max-w-[85%] mx-auto flex flex-col gap-10"
-      >
-        <section id="charts-section">
-          <ChartsSection
-            studentResults={studentResults}
-            stats={stats}
-            darkMode={darkMode}
-          />
-        </section>
+      <div className="max-w-[85%] mx-auto flex flex-col gap-10 mb-10">
+        {(errors?.length > 0 || warnings?.length > 0) && (
+          <div
+            className={`p-6 rounded-2xl border ${
+              errors?.length > 0
+                ? "bg-red-500/10 border-red-500/30"
+                : "bg-amber-500/10 border-amber-500/30"
+            }`}
+          >
+            <h3
+              className={`text-xl font-medium mb-4 flex items-center gap-2 ${
+                errors?.length > 0 ? "text-red-500" : "text-amber-500"
+              }`}
+            >
+              <AlertTriangle /> Data Quality {errors?.length > 0 ? "Issues Detected" : "Warning"}
+            </h3>
+            
+            <ul className="space-y-2 mb-4 text-sm font-medium">
+              {errors?.map((err, i) => (
+                <li key={`err-${i}`} className="text-red-400">
+                  {err}
+                </li>
+              ))}
+              {warnings?.map((warn, i) => (
+                <li key={`warn-${i}`} className="text-amber-500">
+                  {warn}
+                </li>
+              ))}
+            </ul>
 
-        <section id="stats-summary">
-          <StatsSummary stats={stats} darkMode={darkMode} />
-        </section>
-
-        <section id="ai-overview">
-          <AiOverview
-            stats={stats}
-            studentResults={studentResults}
-            darkMode={darkMode}
-          />
-        </section>
+            {errors?.length > 0 ? (
+              <p className="text-sm font-medium text-red-400 border-t border-red-500/20 pt-4">
+                Visualization generation is blocked until these errors are resolved. Please fix the data and try uploading again.
+              </p>
+            ) : (
+              <p className="text-sm font-medium text-amber-500 border-t border-amber-500/20 pt-4">
+                These warnings do not block visualization, so your charts have been generated below.
+              </p>
+            )}
+          </div>
+        )}
       </div>
+
+      {(!errors || errors.length === 0) && (
+        <div
+          id="results-export"
+          className="max-w-[85%] mx-auto flex flex-col gap-10"
+        >
+          <section id="charts-section">
+            <ChartsSection
+              studentResults={studentResults}
+              stats={stats}
+              darkMode={darkMode}
+            />
+          </section>
+
+          <section id="stats-summary">
+            <StatsSummary stats={stats} darkMode={darkMode} />
+          </section>
+
+          <section id="ai-overview">
+            <AiOverview
+              stats={stats}
+              studentResults={studentResults}
+              darkMode={darkMode}
+            />
+          </section>
+        </div>
+      )}
 
       <div className="mt-14 mb-10 text-center">
         <button

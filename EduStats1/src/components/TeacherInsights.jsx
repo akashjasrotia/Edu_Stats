@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AcademicCapIcon } from "@heroicons/react/24/solid";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2 } from "lucide-react";
@@ -8,6 +8,14 @@ export default function TeacherInsights({ stats, studentResults, darkMode }) {
   const [insights, setInsights] = useState([]);
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const didAutoRun = useRef(false);
+
+  useEffect(() => {
+  if (!didAutoRun.current) {
+      didAutoRun.current = true;
+      generateInsights();
+    }
+  }, []);
 
   function extractInsights(text) {
     if (!text) return [];
@@ -67,7 +75,8 @@ You are an experienced teacher mentor.
 
 Return EXACTLY 6 lines of plain text.
 
-Line 1 must be a short intro sentence (no colon).
+format for the points should be: 'title of the advice : advice content'.
+saperated with colon.
 
 Lines 2–6 must follow this STRICT format:
 Title: Teaching advice for the teacher
@@ -109,10 +118,10 @@ Student Results: ${JSON.stringify(studentResults)}
     <motion.div
       layout
       transition={{ layout: { duration: 0.35 } }}
-      className={`p-6 mt-6 rounded-2xl border ${
+      className={`p-6 mt-6 rounded-2xl ${
         darkMode
-          ? "bg-zinc-900 border-zinc-800 text-white"
-          : "bg-white border-gray-200"
+          ? "bg-zinc-900  text-white"
+          : "bg-white "
       }`}
     >
       <div className="flex items-center gap-2 mb-4">
