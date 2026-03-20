@@ -41,19 +41,19 @@ body{
 }
 
 .glass-panel {
-  @apply rounded-2xl glass transition-all duration-300;
+  @apply rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 shadow-xl transition-all duration-300;
 }
 
 .glass-panel-dark {
-  @apply rounded-2xl glass-dark transition-all duration-300;
+  @apply rounded-2xl backdrop-blur-xl bg-black/30 border border-white/5 shadow-2xl transition-all duration-300;
 }
 
 .glass-card {
-  @apply rounded-3xl glass hover:-translate-y-1 hover:shadow-2xl hover:bg-white/20 transition-all duration-300;
+  @apply rounded-3xl backdrop-blur-xl bg-white/10 border border-white/20 shadow-xl hover:-translate-y-1 hover:shadow-2xl hover:bg-white/20 transition-all duration-300;
 }
 
 .glass-card-dark {
-  @apply rounded-3xl glass-dark hover:-translate-y-1 hover:shadow-2xl hover:bg-white/5 transition-all duration-300;
+  @apply rounded-3xl backdrop-blur-xl bg-black/30 border border-white/5 shadow-2xl hover:-translate-y-1 hover:shadow-2xl hover:bg-white/5 transition-all duration-300;
 }
 
 .glass-input {
