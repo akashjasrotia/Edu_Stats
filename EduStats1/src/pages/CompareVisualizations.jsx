@@ -20,7 +20,7 @@ export default function CompareVisualizations() {
   useEffect(() => {
     if (!user?.email) return;
 
-    fetch(`http://localhost:3000/api/visuals/${user.email}`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/visuals/${user.email}`)
       .then((res) => res.json())
       .then((data) => setVisuals(data.visualizations || []));
   }, [user.email]);

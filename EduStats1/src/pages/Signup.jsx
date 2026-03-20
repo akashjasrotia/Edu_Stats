@@ -25,7 +25,7 @@ export default function Signup() {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:3000/api/signup", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -75,7 +75,7 @@ export default function Signup() {
 
             {/* Google Button */}
             <a
-            href="http://localhost:3000/api/auth/google"
+            href={`${import.meta.env.VITE_BACKEND_URL}/api/auth/google`}
             className={`flex items-center justify-center gap-3 w-full py-2.5 rounded-lg border transition-all duration-200 active:scale-[0.98] ${
                 darkMode
                 ? "bg-zinc-900 border-zinc-800 text-zinc-200 hover:bg-zinc-800"

@@ -8,7 +8,7 @@ export default function ProtectedRoute({ children }) {
 
   const fetchAuthStatus = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/home", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/home`, {
         method: "GET",
         credentials: "include",
       });

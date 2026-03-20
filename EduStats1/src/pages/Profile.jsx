@@ -34,7 +34,7 @@ export default function Profile() {
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/profile", {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, {
           credentials: "include",
         });
 
@@ -56,7 +56,7 @@ export default function Profile() {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/logout", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/logout`, {
         method: "POST",
         credentials: "include",
       });

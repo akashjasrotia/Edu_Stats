@@ -31,7 +31,7 @@ export default function CompareResult() {
     const fetchComparison = async () => {
       try {
         const res = await fetch(
-          "http://localhost:3000/api/compare-visualizations",
+          `${import.meta.env.VITE_BACKEND_URL}/api/compare-visualizations`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

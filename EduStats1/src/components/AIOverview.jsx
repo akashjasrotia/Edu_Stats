@@ -56,7 +56,7 @@ export default function AiOverview({ stats, studentResults, darkMode }) {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${api_key}`,
-          "HTTP-Referer": "http://localhost",
+          "HTTP-Referer": window.location.origin,
         },
         body: JSON.stringify({
           model: "openai/gpt-oss-20b:free",

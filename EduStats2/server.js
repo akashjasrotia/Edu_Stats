@@ -23,8 +23,19 @@ dotenv.config();
 connectDB();
 const app = express();
 
+const frontendUrls = [
+  "http://localhost:5173",
+  process.env.FRONTEND_URL || "http://localhost:5173"
+];
+
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: function (origin, callback) {
+    if (!origin || frontendUrls.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 app.use(express.json());

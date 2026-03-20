@@ -15,7 +15,7 @@ export default function VisualizationTimeline() {
   useEffect(() => {
     if (!user?.email) return;
 
-    fetch(`http://localhost:3000/api/timeline/${user.email}`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/timeline/${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         setTimeline(data.timeline || []);

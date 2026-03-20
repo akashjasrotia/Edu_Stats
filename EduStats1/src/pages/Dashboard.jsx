@@ -31,7 +31,7 @@ export default function Dashboard() {
     const load = async () => {
       try {
         const res = await fetch(
-          `http://localhost:3000/api/visuals/${user.email}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/visuals/${user.email}`
         );
         const data = await res.json();
         setVisuals(data.visualizations || []);
@@ -75,7 +75,7 @@ export default function Dashboard() {
 
   const confirmDelete = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/deleteViz", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deleteViz`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: deleteId }),
@@ -96,7 +96,7 @@ export default function Dashboard() {
   /* ================= EDIT ================= */
   const saveEdit = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/editViz", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/editViz`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: editId, vizName: editName }),

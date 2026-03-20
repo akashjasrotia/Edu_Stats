@@ -23,7 +23,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3000/api/login", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -92,7 +92,7 @@ export default function Login() {
 
         
         <a
-          href="http://localhost:3000/api/auth/google"
+          href={`${import.meta.env.VITE_BACKEND_URL}/api/auth/google`}
           className={`flex items-center justify-center gap-3 w-full py-2.5 rounded-lg border text-sm font-medium transition-colors duration-200 ${
             darkMode
               ? "bg-neutral-800 border-neutral-700 text-neutral-200 hover:bg-neutral-700"

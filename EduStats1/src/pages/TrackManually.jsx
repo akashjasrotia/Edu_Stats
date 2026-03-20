@@ -69,7 +69,7 @@ export default function ManualEntry() {
     setIsLoading(true);
 
     try {
-      const res = await fetch("http://localhost:3000/api/manual-entry", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/manual-entry`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ vizName, students, user }),

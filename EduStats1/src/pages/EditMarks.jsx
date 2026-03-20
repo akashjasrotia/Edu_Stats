@@ -15,7 +15,7 @@ export default function EditMarks() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/saved-results/${id}`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/saved-results/${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.visualization) {
@@ -46,7 +46,7 @@ export default function EditMarks() {
 
     setSaving(true);
     try {
-      const res = await fetch(`http://localhost:3000/api/edit-marks/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/edit-marks/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ students }),

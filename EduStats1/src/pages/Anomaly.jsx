@@ -20,7 +20,7 @@ export default function AnomalyDetection() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/anomaly/${user.email}`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/anomaly/${user.email}`)
       .then((res) => res.json())
       .then((d) => setData(d.results || []));
   }, [user?.email]);

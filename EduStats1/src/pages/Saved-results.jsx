@@ -32,7 +32,7 @@ export default function SavedResultsPage() {
     const loadSavedViz = async () => {
       try {
         const res = await fetch(
-          `http://localhost:3000/api/saved-results/${id}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/saved-results/${id}`
         );
         const data = await res.json();
         setResult(data.visualization || null);
